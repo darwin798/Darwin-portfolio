@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO LIST WITH ALARM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #b0a8b9;
+            --secondary: #845ec2;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #212529;
+            --gray: #333;
+            --light: #ffffff;
+            --light-gray: #e9ecef;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        body {
+            background: linear-gradient(100deg, #606C38 0%, #283618 15%, #FEFAE0 100%, #DDA15E 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            color: var(--light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            transition: transform 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .panel-header h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Todo Form */
+        .todo-form {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Todo List */
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .todo-item.overdue {
+            border-left-color: var(--danger);
+            background: #fff5f5;
+        }
+
+        .todo-item.completed {
+            opacity: 15;
+            border-left-color: var(--success);
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .todo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .todo-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        .todo-item.completed .todo-title {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .todo-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .todo-description {
+            color: var(--dark);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .alarm-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--warning);
+            margin-right: 5px;
+        }
+
+        /* Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .stat-card.danger {
+            background: linear-gradient(135deg, #e63946 0%, #d90429 100%);
+        }
+
+        .stat-card.warning {
+            background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .upcoming-tasks {
+            margin-top: 20px;
+        }
+
+        .upcoming-item {
+            padding: 12px;
+            background: var(--light);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Notifications */
+        .notification {
+            background: white;
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .notification-content {
+            line-height: 1.4;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-container {
+                padding: 0 10px;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tasks"></i> SMART TO-DO LIST WITH ALARM</h1>
+            <p>Master your time: let alarms guard your deadlines, dashboards illuminate your goals, and real-time alerts keep you agile</p>
+        </header>
+
+        <div class="app-container">
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-plus-circle"></i> Add New Task</h2>
+                    </div>
+                    <form id="todo-form" class="todo-form">
+                        <div class="form-group">
+                            <label for="title">Task Title *</label>
+                            <input type="text" id="title" placeholder="What needs to be done?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" placeholder="Add details..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="due-date">Due Date</label>
+                            <input type="date" id="due-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="alarm-time">Alarm Time</label>
+                            <input type="time" id="alarm-time">
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <select id="priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-list-check"></i> My Tasks</h2>
+                        <span id="task-count">0 tasks</span>
+                    </div>
+                    <ul id="todo-list" class="todo-list">
+                        <!-- Tasks will be added here dynamically -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="total-tasks">0</div>
+                            <div class="stat-label">Total Tasks</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-value" id="completed-tasks">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-value" id="pending-tasks">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="stat-value" id="overdue-tasks">0</div>
+                            <div class="stat-label">Overdue</div>
+                        </div>
+                    </div>
+                    
+                    <div class="upcoming-tasks">
+                        <h3 style="margin-bottom: 15px; color: var(--secondary);"><i class="fas fa-calendar-day"></i> Upcoming Tasks</h3>
+                        <div id="upcoming-list">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-check"></i>
+                                <p>No upcoming tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-bell"></i> Notifications</h2>
+                        <button id="clear-notifications" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                    <div id="notifications-container">
+                        <div class="empty-state">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>No notifications yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Task management system
+        class TodoApp {
+            constructor() {
+                this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                this.notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+                this.alarmTimeouts = [];
+                this.init();
+            }
+
+            init() {
+                this.renderTasks();
+                this.renderDashboard();
+                this.renderNotifications();
+                this.setupEventListeners();
+                this.startAlarmSystem();
+                this.updateTaskCount();
+            }
+
+            setupEventListeners() {
+                // Form submission
+                document.getElementById('todo-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addTask();
+                });
+
+                // Clear notifications
+                document.getElementById('clear-notifications').addEventListener('click', () => {
+                    this.clearNotifications();
+                });
+            }
+
+            addTask() {
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const dueDate = document.getElementById('due-date').value;
+                const alarmTime = document.getElementById('alarm-time').value;
+                const priority = document.getElementById('priority').value;
+
+                if (!title.trim()) return;
+
+                let alarmDateTime = null;
+                if (dueDate && alarmTime) {
+                    alarmDateTime = new Date(`${dueDate}T${alarmTime}`);
+                } else if (dueDate) {
+                    // Default to 9 AM on due date if only date is provided
+                    alarmDateTime = new Date(`${dueDate}T09:00`);
+                }
+
+                const newTask = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    dueDate: dueDate || null,
+                    alarmTime: alarmDateTime ? alarmDateTime.toISOString() : null,
+                    priority,
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                };
+
+                this.tasks.push(newTask);
+                this.saveTasks();
+                this.renderTasks();
+                this.renderDashboard();
+                this.updateTaskCount();
+                
+                // Reset form
+                document.getElementById('todo-form').reset();
+                
+                // Show notification
+                this.addNotification(`New task added: "${title}"`);
+                
+                // Set alarm if applicable
+                if (alarmDateTime) {
+                    this.scheduleAlarm(newTask);
+                }
+            }
+
+            toggleTaskCompletion(id) {
+                const task = this.tasks.find(t => t.id === id);
+                if (task) {
+                    task.completed = !task.completed;
+                    this.saveTasks();
+                    this.renderTasks();
+                    this.renderDashboard();
+                    this.updateTaskCount();
+                    
+                    if (task.completed) {
+                        this.addNotification(`Task completed: "${task.title}"`);
+                        // Cancel any pending alarms for this task
+                        this.cancelAlarm(id);
+                    }
+                }
+            }
+
+            deleteTask(id) {
+                this.tasks = this.tasks.filter(t => t.id !== id);
+                this.saveTasks();
+                this.renderTasks();
+                this.renderDashboard();
+                this.updateTaskCount();
+                this.addNotification('Task deleted');
+                // Cancel any pending alarms
+                this.cancelAlarm(id);
+            }
+
+            saveTasks() {
+                localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            }
+
+            renderTasks() {
+                const todoList = document.getElementById('todo-list');
+                if (this.tasks.length === 0) {
+                    todoList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>No tasks yet. Add your first task!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Sort tasks: incomplete first, then by due date
+                const sortedTasks = [...this.tasks].sort((a, b) => {
+                    if (a.completed !== b.completed) {
+                        return a.completed ? 1 : -1;
+                    }
+                    if (a.dueDate && b.dueDate) {
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                    }
+                    return a.dueDate ? -1 : 1;
+                });
+
+                todoList.innerHTML = sortedTasks.map(task => {
+                    const isOverdue = !task.completed && task.dueDate && new Date(task.dueDate) < new Date();
+                    const dueDateStr = task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date';
+                    const alarmStr = task.alarmTime ? new Date(task.alarmTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+                    
+                    return `
+                        <li class="todo-item ${task.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
+                            <div class="todo-header">
+                                <div class="todo-title">${this.escapeHtml(task.title)}</div>
+                                <div class="todo-actions">
+                                    <button class="btn btn-sm ${task.completed ? 'btn-primary' : 'btn-success'}" 
+                                            onclick="app.toggleTaskCompletion(${task.id})">
+                                        ${task.completed ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-check"></i>'}
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" 
+                                            onclick="app.deleteTask(${task.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            ${task.description ? `<div class="todo-description">${this.escapeHtml(task.description)}</div>` : ''}
+                            <div class="todo-meta">
+                                <span><i class="fas fa-calendar-day"></i> ${dueDateStr}</span>
+                                ${alarmStr ? `<span><i class="fas fa-bell"></i> ${alarmStr}</span>` : ''}
+                                <span><i class="fas fa-flag"></i> ${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+                            </div>
+                        </li>
+                    `;
+                }).join('');
+            }
+
+            renderDashboard() {
+                const now = new Date();
+                const completed = this.tasks.filter(t => t.completed).length;
+                const pending = this.tasks.filter(t => !t.completed).length;
+                const overdue = this.tasks.filter(t => 
+                    !t.completed && t.dueDate && new Date(t.dueDate) < now
+                ).length;
+
+                document.getElementById('total-tasks').textContent = this.tasks.length;
+                document.getElementById('completed-tasks').textContent = completed;
+                document.getElementById('pending-tasks').textContent = pending;
+                document.getElementById('overdue-tasks').textContent = overdue;
+
+                // Render upcoming tasks (next 7 days)
+                const upcomingList = document.getElementById('upcoming-list');
+                const upcomingTasks = this.tasks
+                    .filter(t => !t.completed && t.dueDate)
+                    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+                    .slice(0, 5);
+
+                if (upcomingTasks.length === 0) {
+                    upcomingList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-check"></i>
+                            <p>No upcoming tasks</p>
+                        </div>
+                    `;
+                } else {
+                    upcomingList.innerHTML = upcomingTasks.map(task => `
+                        <div class="upcoming-item">
+                            <div>
+                                <div style="font-weight: 600;">${this.escapeHtml(task.title)}</div>
+                                <div style="font-size: 0.85rem; color: var(--gray);">
+                                    ${new Date(task.dueDate).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <span class="priority-${task.priority}">${task.priority}</span>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            renderNotifications() {
+                const container = document.getElementById('notifications-container');
+                if (this.notifications.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>No notifications yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = this.notifications.map(note => `
+                    <div class="notification">
+                        <div class="notification-header">
+                            <strong>Alert</strong>
+                            <span class="notification-time">${new Date(note.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                        <div class="notification-content">${this.escapeHtml(note.message)}</div>
+                    </div>
+                `).join('');
+            }
+
+            addNotification(message) {
+                const notification = {
+                    id: Date.now(),
+                    message,
+                    timestamp: new Date().toISOString()
+                };
+                this.notifications.unshift(notification);
+                // Keep only last 10 notifications
+                if (this.notifications.length > 10) {
+                    this.notifications.pop();
+                }
+                localStorage.setItem('notifications', JSON.stringify(this.notifications));
+                this.renderNotifications();
+            }
+
+            clearNotifications() {
+                this.notifications = [];
+                localStorage.removeItem('notifications');
+                this.renderNotifications();
+            }
+
+            updateTaskCount() {
+                const count = this.tasks.filter(t => !t.completed).length;
+                document.getElementById('task-count').textContent = 
+                    `${count} ${count === 1 ? 'task' : 'tasks'} remaining`;
+            }
+
+            startAlarmSystem() {
+                // Clear any existing timeouts
+                this.alarmTimeouts.forEach(timeout => clearTimeout(timeout));
+                this.alarmTimeouts = [];
+
+                // Schedule alarms for all uncompleted tasks with alarm times
+                this.tasks.forEach(task => {
+                    if (!task.completed && task.alarmTime) {
+                        this.scheduleAlarm(task);
+                    }
+                });
+            }
+
+            scheduleAlarm(task) {
+                const alarmTime = new Date(task.alarmTime);
+                const now = new Date();
+                
+                if (alarmTime > now) {
+                    const timeout = setTimeout(() => {
+                        this.triggerAlarm(task);
+                    }, alarmTime - now);
+                    
+                    this.alarmTimeouts.push(timeout);
+                }
+            }
+
+            triggerAlarm(task) {
+                // Only trigger if task is not completed
+                if (!task.completed) {
+                    const message = `⏰ Alarm! Task "${task.title}" is due!`;
+                    this.addNotification(message);
+                    
+                    // Browser notification if supported
+                    if ('Notification' in window) {
+                        if (Notification.permission === 'granted') {
+                            new Notification('Task Alarm', { body: message });
+                        } else if (Notification.permission !== 'denied') {
+                            Notification.requestPermission().then(permission => {
+                                if (permission === 'granted') {
+                                    new Notification('Task Alarm', { body: message });
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            cancelAlarm(taskId) {
+                // Find and remove the timeout for this task
+                const task = this.tasks.find(t => t.id === taskId);
+                if (task && task.alarmTime) {
+                    // We can't directly cancel specific timeouts, so we'll rely on the check in triggerAlarm
+                    // In a production app, we'd maintain a map of task IDs to timeout IDs
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new TodoApp();
+        });
+    </script>
+</body>

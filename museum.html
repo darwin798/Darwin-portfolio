@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Digital Art Museum - Contemporary Portraits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #8B5CF6; --primary-dark: #7C3AED; --secondary: #F59E0B;
+            --accent: #10B981; --dark: #0F172A; --dark-light: #1E293B;
+            --card: #334155; --text: #F8FAFC; --text-muted: #94A3B8;
+            --border: rgba(139, 92, 246, 0.3); --glow: rgba(139, 92, 246, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; background: var(--dark);
+            color: var(--text); overflow-x: hidden; line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Cinzel', serif; }
+        .quote-text { font-family: 'Playfair Display', serif; font-style: italic; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.5rem; font-weight: 700; font-family: 'Cinzel', serif;
+        }
+
+        .logo-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; box-shadow: 0 0 20px var(--glow);
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-weight: 500;
+            transition: all 0.3s; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0; height: 2px; background: var(--primary); transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50px; color: white; text-decoration: none;
+            font-weight: 600; transition: all 0.3s;
+            box-shadow: 0 5px 20px var(--glow);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--glow); }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 8rem 5% 4rem; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; width: 800px; height: 800px;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            top: -300px; right: -300px; animation: pulse 6s ease-in-out infinite;
+        }
+        .hero::after {
+            content: ''; position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+            bottom: -200px; left: -200px; animation: pulse 6s ease-in-out infinite 3s;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content { text-align: center; z-index: 1; max-width: 1000px; }
+        .hero-badge {
+            display: inline-block; padding: 0.5rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2); border: 1px solid var(--primary);
+            border-radius: 50px; font-size: 0.9rem; margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+        .hero h1 {
+            font-size: 4.5rem; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text), var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero p {
+            font-size: 1.3rem; color: var(--text-muted); margin-bottom: 3rem;
+            max-width: 700px; margin-left: auto; margin-right: auto;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero-buttons {
+            display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem; border-radius: 50px; font-weight: 600;
+            text-decoration: none; transition: all 0.3s; cursor: pointer;
+            border: none; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; box-shadow: 0 5px 20px var(--glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--glow); }
+        .btn-secondary {
+            background: transparent; color: var(--text); border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover { background: var(--primary); transform: translateY(-3px); }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 5%; background: var(--dark-light);
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .stat-card { text-align: center; padding: 2rem; }
+        .stat-number {
+            font-size: 3rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .stat-label { color: var(--text-muted); font-size: 1rem; }
+
+        /* 3D Virtual Painting Section */
+        .virtual-3d-section {
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(245, 158, 11, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .virtual-3d-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .virtual-3d-display {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            perspective: 1000px;
+        }
+
+        .virtual-canvas-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3D 8s ease-in-out infinite;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .virtual-canvas-3d::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            opacity: 0.3;
+            transform: translateZ(-50px);
+        }
+
+        .virtual-canvas-3d img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .floating-particle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            animation: float3D 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .floating-particle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-particle:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; width: 30px; height: 30px; }
+        .floating-particle:nth-child(3) { bottom: 20%; left: 5%; animation-delay: 2s; }
+        .floating-particle:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 3s; width: 25px; height: 25px; }
+
+        @keyframes rotate3D {
+            0%, 100% { transform: rotateY(-10deg) rotateX(5deg); }
+            25% { transform: rotateY(10deg) rotateX(5deg); }
+            50% { transform: rotateY(10deg) rotateX(-5deg); }
+            75% { transform: rotateY(-10deg) rotateX(-5deg); }
+        }
+
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
+            33% { transform: translateY(-30px) translateX(20px) scale(1.2); opacity: 0.8; }
+            66% { transform: translateY(20px) translateX(-20px) scale(0.8); opacity: 0.4; }
+        }
+
+        .virtual-3d-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .virtual-3d-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list li {
+            padding: 0.8rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-list li::before {
+            content: '✨';
+            font-size: 1.2rem;
+        }
+
+        /* Galleries Section */
+        .galleries { padding: 6rem 5%; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title { font-size: 3rem; margin-bottom: 1rem; }
+        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem; max-width: 1400px; margin: 0 auto;
+        }
+
+        .gallery-card {
+            background: var(--dark-light); border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--border); transition: all 0.4s; position: relative;
+        }
+        .gallery-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0); transition: transform 0.4s;
+        }
+        .gallery-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .gallery-card:hover::before { transform: scaleX(1); }
+
+        .gallery-image { width: 100%; height: 400px; object-fit: cover; transition: transform 0.4s; }
+        .gallery-card:hover .gallery-image { transform: scale(1.05); }
+
+        .gallery-content { padding: 2rem; }
+        .gallery-tag {
+            display: inline-block; padding: 0.3rem 1rem;
+            background: rgba(139, 92, 246, 0.2); border-radius: 50px;
+            font-size: 0.8rem; margin-bottom: 1rem; color: var(--primary);
+        }
+        .gallery-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
+        .gallery-card p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        .gallery-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 1.5rem; border-top: 1px solid var(--border);
+        }
+        .gallery-items { color: var(--text-muted); font-size: 0.9rem; }
+        .gallery-link {
+            color: var(--primary); text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem; transition: gap 0.3s;
+        }
+        .gallery-link:hover { gap: 1rem; }
+
+        /* Quote Block Style */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(245, 158, 11, 0.1));
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem; margin: 1rem 0; border-radius: 0 12px 12px 0;
+            font-style: italic; color: var(--text-muted);
+        }
+
+        /* Artist Section */
+        .artist-section { padding: 6rem 5%; background: var(--dark-light); }
+        .artist-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem; max-width: 1200px; margin: 0 auto;
+        }
+        .artist-card {
+            text-align: center; padding: 2rem; background: var(--dark);
+            border-radius: 20px; border: 1px solid var(--border); transition: all 0.3s;
+        }
+        .artist-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
+        .artist-avatar {
+            width: 120px; height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%; margin: 0 auto 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; box-shadow: 0 0 30px var(--glow);
+        }
+        .artist-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .artist-role { color: var(--secondary); font-weight: 600; margin-bottom: 1rem; }
+        .artist-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Footer */
+        footer { padding: 4rem 5% 2rem; background: var(--dark-light); border-top: 1px solid var(--border); }
+        .footer-content {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem; margin-bottom: 3rem;
+        }
+        .footer-section h4 { font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--primary); }
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 0.8rem; }
+        .footer-section a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-section a:hover { color: var(--primary); }
+        .footer-bottom {
+            text-align: center; padding-top: 2rem;
+            border-top: 1px solid var(--border); color: var(--text-muted);
+        }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--dark-light); padding: 3rem; border-radius: 20px;
+            max-width: 800px; width: 90%; position: relative;
+            border: 1px solid var(--border); max-height: 90vh; overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            font-size: 2rem; cursor: pointer; color: var(--text-muted);
+            transition: color 0.3s;
+        }
+        .modal-close:hover { color: var(--primary); }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s;
+            z-index: 999; box-shadow: 0 5px 20px var(--glow);
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .scroll-top:hover { transform: translateY(-5px); }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); display: flex; align-items: center; justify-content: center;
+            z-index: 3000; transition: opacity 0.5s;
+        }
+        .loader.hidden { opacity: 0; pointer-events: none; }
+        .loader-content { text-align: center; }
+        .loader-icon { font-size: 4rem; animation: bounce 1s infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Animations on Scroll */
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .section-title { font-size: 2rem; }
+            .gallery-image { height: 300px; }
+            .virtual-3d-container { grid-template-columns: 1fr; }
+            .virtual-3d-display { height: 400px; }
+        }
+
+        /* Updated Gallery Card with Animated Rainbow Border */
+.gallery-card {
+    background: var(--dark-light); 
+    border-radius: 20px; 
+    overflow: hidden;
+    border: none; /* Remove default border for custom animated border */
+    transition: all 0.4s; 
+    position: relative;
+    cursor: pointer;
+}
+
+/* Animated Rainbow Border Effect */
+.gallery-card::before, 
+.gallery-card::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    border-radius: 20px; /* Match card border-radius */
+    background: linear-gradient(
+        45deg, 
+        blue, white, gray, blue, green, yellow, blue
+    );
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+    opacity: 0; /* Hidden by default, shown on hover */
+    transition: opacity 0.4s ease;
+}
+
+.gallery-card::after {
+    filter: blur(25px); /* Smooth glowing effect */
+    opacity: 0;
+}
+
+/* Show animated border on hover */
+.gallery-card:hover::before,
+.gallery-card:hover::after {
+    opacity: 1;
+}
+
+@keyframes steam {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* Keep existing hover effects */
+.gallery-card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
+}
+
+/* Top accent line (keep existing) */
+.gallery-card::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0); 
+    transition: transform 0.4s;
+    z-index: 2; /* Keep above rainbow border */
+    border-radius: 20px 20px 0 0;
+    animation: none; /* Disable rainbow animation for top line */
+    background-size: auto;
+    width: 100%;
+    height: 4px;
+    opacity: 1;
+}
+
+.gallery-card:hover::before { 
+    transform: scaleX(1); 
+}
+
+/* Ensure content stays above borders */
+.gallery-card > * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Image container */
+.gallery-image { 
+    width: 100%; 
+    height: 400px; 
+    object-fit: cover; 
+    transition: transform 0.4s; 
+}
+.gallery-card:hover .gallery-image { 
+    transform: scale(1.05); 
+}
+
+/* Content padding */
+.gallery-content { 
+    padding: 2rem; 
+}
+
+/* Tag styling */
+.gallery-tag {
+    display: inline-block; 
+    padding: 0.3rem 1rem;
+    background: rgba(139, 92, 246, 0.2); 
+    border-radius: 50px;
+    font-size: 0.8rem; 
+    margin-bottom: 1rem; 
+    color: var(--primary);
+}
+
+/* Typography */
+.gallery-card h3 { 
+    font-size: 1.5rem; 
+    margin-bottom: 0.8rem; 
+}
+.gallery-card p { 
+    color: var(--text-muted); 
+    margin-bottom: 1.5rem; 
+}
+
+/* Meta section */
+.gallery-meta {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding-top: 1.5rem; 
+    border-top: 1px solid var(--border);
+}
+.gallery-items { 
+    color: var(--text-muted); 
+    font-size: 0.9rem; 
+}
+.gallery-link {
+    color: var(--primary); 
+    text-decoration: none; 
+    font-weight: 600;
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem; 
+    transition: gap 0.3s;
+}
+.gallery-link:hover { 
+    gap: 1rem; 
+}
+/* From Uiverse.io by gharsh11032000 */ 
+.menu {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #000000;
+  width: fit-content;
+  display: flex;
+  list-style: none;
+}
+
+.menu a {
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.menu .link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 36px;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0a3cff;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .link svg {
+  width: 14px;
+  height: 14px;
+  fill: #000000;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .item {
+  position: relative;
+}
+
+.menu .item .submenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  border-radius: 0 0 16px 16px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #cccccc;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 1;
+  pointer-events: none;
+  list-style: none;
+}
+
+.menu .item:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  border-top: transparent;
+  border-color: #0a3cff;
+}
+
+.menu .item:hover .link {
+  color: #ffffff;
+  border-radius: 16px 16px 0 0;
+}
+
+.menu .item:hover .link::after {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+.menu .item:hover .link svg {
+  fill: #ffffff;
+  transform: rotate(-180deg);
+}
+
+.submenu .submenu-item {
+  width: 100%;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-link {
+  display: block;
+  padding: 12px 24px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-item:last-child .submenu-link {
+  border-bottom: none;
+}
+
+.submenu .submenu-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scaleX(0);
+  width: 100%;
+  height: 100%;
+  background-color: #0a3cff;
+  z-index: -1;
+  transform-origin: left;
+  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-link:hover:before {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+.submenu .submenu-link:hover {
+  color: #ffffff;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-icon">🎨</div>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Loading Art Gallery...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">🎨</div>
+            <span>Art Museum</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#virtual3d">3D Virtual</a></li>
+            <li><a href="#galleries">Galleries</a></li>
+            <li><a href="#artists">Artists</a></li>
+            <li><a href="#visit">Visit</a></li>
+        </ul>
+        <a href="#galleries" class="nav-cta">Explore Art</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">✨ Contemporary Portrait Exhibition</div>
+            <h1>Welcome to Art Museum </h1>
+            <p>Discover stunning contemporary portraits that capture the essence of human expression through pencil, digital art, and innovative techniques and artstyle.</p>
+            <div class="hero-buttons">
+                <a href="#galleries" class="btn btn-primary">🎨 View Collection</a>
+                <a href="#virtual3d" class="btn btn-secondary"> Experience 3D</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="virtual-3d-section" id="virtual3d">
+        <div class="section-header">
+            <h2 class="section-title"> 3D Virtual Painting Experience</h2>
+            <p class="section-subtitle">Step into the future of art with our immersive 3D gallery</p>
+        </div>
+        <div class="virtual-3d-container">
+            <div class="virtual-3d-display animate-on-scroll">
+                <div class="floating-elements">
+                </div>
+                <div class="virtual-canvas-3d">
+                    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnkyanA1dnp0Y3E4Z2dvZHIzYzFhanhvazhmZmV0N2Ntcnd4a3hsMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEdv4PbPTR65zVSqk/giphy.gif" alt="3D Sculpture">
+                </div>
+            </div>
+            <div class="virtual-3d-content animate-on-scroll">
+                <h2>Immersive 3D Art Gallery</h2>
+                <p>Experience art like never before with our cutting-edge 3D virtual painting technology. Watch as artworks come to life with dynamic rotations, floating elements, and stunning visual effects.</p>
+                <a href="#galleries" class="btn btn-primary">Explore Collection →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" id="stat1">0</div><div class="stat-label">Artworks</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat2">0</div><div class="stat-label">Featured Artists</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat3">0</div><div class="stat-label">Visitors</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat4">0</div><div class="stat-label">Exhibitions</div></div>
+        </div>
+    </section>
+
+
+    <section class="galleries" id="galleries">
+        <div class="section-header">
+            <h2 class="section-title">Featured Artworks</h2>
+            <p class="section-subtitle">Explore our curated collection of contemporary portrait art</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-card animate-on-scroll">
+                <img src="ely.jpg" alt="Portrait by ELY - Long hair study" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Pencil Art</span>
+                    <h3>Serene Gaze</h3>
+                    <p>A masterful pencil portrait capturing delicate features and expressive eyes with remarkable detail and shading.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">✏️ Graphite on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork1'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="ely2.jpg" alt="Portrait by ELY - Short hair with hands" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Pencil Art</span>
+                    <h3>Playful Expression</h3>
+                    <p>Dynamic composition featuring playful pose with hands framing the face, showcasing advanced shading techniques.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">✏️ Graphite on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork2'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="ely3.jpg" alt="Portrait by ELY - Hair buns with fur coat" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Pencil Art</span>
+                    <h3>Winter Elegance</h3>
+                    <p>Exquisite detail in hair texture and fur rendering, demonstrating exceptional skill in creating depth and softness.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">✏️ Graphite on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork3'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="me.jpg" alt="Digital art by Darwin - Person with glasses" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Digital Art</span>
+                    <h3>Digital Portrait Study</h3>
+                    <p>Vibrant digital illustration featuring bold colors and expressive brushwork with contemporary styling.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">Digital Media</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork4'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="m4.jpg" alt="Digital painting by DC - Portrait on red background" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Digital Painting</span>
+                    <h3>Joyful Moment</h3>
+                    <p>Striking portrait against bold red background, capturing genuine emotion and happiness through digital painting.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">Digital Painting</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork5'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="me3.jpg" alt="Digital painting - Woman with glasses and ice cream" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Digital Painting</span>
+                    <h3>Flexing Ice Cream</h3>
+                    <p class="quote-text">"She saw the world clearly through her glasses and tasted its sweetness one scoop at a time."</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items"> Digital Painting</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork6'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="reign3.jpg" alt="Charcoal Portrait By: Reign Lungalog - Alina in Thought" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Charcoal Portrait</span>
+                    <h3>Alina in Thought</h3>
+                    <p class="quote-text">"Half in shadow, half in light—she learned to belong to both without losing herself."</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items"> Charcoal on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork7'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="reign.jpg" alt="Charcoal Portrait By: Reign Lungalog - Crowd of Morning Blossoms" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Charcoal Portrait</span>
+                    <h3>Crowd of Morning Blossoms</h3>
+                    <p class="quote-text">"Silence sat gently on her face, like a secret only the light could understand."</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items"> Charcoal on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork8'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="reign2.jpg" alt="Charcoal Portrait By: Reign Lungalog - Final Voyage" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Charcoal Portrait</span>
+                    <h3>Final Voyage</h3>
+                    <p class="quote-text">"She sailed not to escape the storm, but to become something the storm could not break."</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">Charcoal on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork9'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="joel3.jpg" alt="ballpoint by:joel - Muscular male character" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Ballpoint</span>
+                    <h3>Warrior's Strength</h3>
+                    <p>A powerful watercolor and ink illustration featuring detailed anatomy and expressive character design with traditional Asian-inspired accessories.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">Watercolor on Paper</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork10'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="joel2.jpg" alt="Mira in Pink by:joel - Stylized female character" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Monochromatic Art</span>
+                    <h3>Pink Dreams</h3>
+                    <p class="quote-text">"In a world painted in shades of pink, she found her own unique hue."</p>
+                    <p>Stunning monochromatic portrait in pink tones showcasing stylized features and intricate jewelry details.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items">Mixed Media</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork11'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-card animate-on-scroll">
+                <img src="joel.jpg" alt="Black and white portrait by:joel - Traditional Asian costume" class="gallery-image">
+                <div class="gallery-content">
+                    <span class="gallery-tag">Photorealistic Drawing</span>
+                    <h3>Royal Heritage</h3>
+                    <p>Exquisite black and white portrait featuring ornate traditional Asian costume with intricate patterns and regal presence.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-items"> Graphite & Charcoal</span>
+                        <a href="#" class="gallery-link" onclick="openModal('artwork12'); return false;">View Details →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="artist-section" id="artists">
+        <div class="section-header">
+            <h2 class="section-title">Filipino Artists</h2>
+            <p class="section-subtitle">Meet the talented creators behind these masterpieces See how beautiful thr masterpiece of filipino's artist</p>
+        </div>
+        <div class="artist-grid">
+            <div class="artist-card animate-on-scroll">
+                <div class="artist-avatar">✏️</div>
+                <h3>ELY</h3>
+                <div class="artist-role">Pencil Artist</div>
+                <p>Specializing in hyperrealistic pencil portraits with exceptional attention to detail, shading, and emotional expression. Known for capturing the subtle nuances of human features.</p>
+           <Li><a href="https://www.facebook.com/lzxkou"><img src="https://tse3.mm.bing.net/th/id/OIP.TJPPqgPkbIoECkGmtCrmIQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" height="48px" wwidth="48px"></a></Li>
+
+            </div>
+            <div class="artist-card animate-on-scroll">
+                <div class="artist-avatar">💻</div>
+                <h3>Darwin</h3>
+                <div class="artist-role">Digital Illustrator</div>
+                <p>Contemporary digital artist creating vibrant, expressive portraits with bold color choices and dynamic compositions that bridge traditional and modern art.</p>
+            <Li><a href="https://www.facebook.com/darwin.deocampo.585"><img src="https://tse3.mm.bing.net/th/id/OIP.TJPPqgPkbIoECkGmtCrmIQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"  height="48px" wwidth="48px"></a></Li>
+
+            </div>
+            <div class="artist-card animate-on-scroll">
+                <div class="artist-avatar">🎨</div>
+                <h3>DC</h3>
+                <div class="artist-role">Digital Painter</div>
+                <p>Master of digital painting techniques, creating emotionally resonant portraits with striking use of color and light to convey mood and personality.</p>
+            <Li><a href="https://www.facebook.com/dc.art.480201"><img src="https://tse3.mm.bing.net/th/id/OIP.TJPPqgPkbIoECkGmtCrmIQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"  height="48px" wwidth="48px"></a></Li>
+            </div>
+            <div class="artist-card animate-on-scroll">
+                <div class="artist-avatar">🖋️</div>
+                <h3>Reign Lungalog</h3>
+                <div class="artist-role">Charcoal Artist</div>
+                <p>Kapampangan Artist. At 16, Reign from Mabalacat City discovered his passion for art at a young age and sharpened it through anime and online tutorials. Using charcoal, graphite, and ink, he creates expressive pieces while dreaming of becoming an architect and uplifting his family.</p>
+            <Li><a href="https://www.facebook.com/reign.lungalong"><img src="https://tse3.mm.bing.net/th/id/OIP.TJPPqgPkbIoECkGmtCrmIQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"  height="48px" wwidth="48px"></a></Li>
+</div>
+            <div class="artist-card animate-on-scroll">
+                <div class="artist-avatar">🖋️</div>
+                <h3>Joel</h3>
+                <div class="artist-role">Mix Media Artist</div>
+                <p>Joel is a talentend artist from the philippines and his art style is mixed media art he used any medium to make an art like ballpoint means ballpen and mix with graphite pencil.</p>
+        <Li><a href="https://www.facebook.com/jo.el.452989"><img src="https://tse3.mm.bing.net/th/id/OIP.TJPPqgPkbIoECkGmtCrmIQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"  height="48px" wwidth="48px"></a></Li>
+            </div>
+    </section>
+
+    <footer id="visit">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🎨 Art Museum</h4>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Celebrating contemporary portrait art and the artists who create emotional connections through their work.</p>
+            </div>
+        
+            
+            <div class="footer-section">
+                <h4>Visit</h4>
+                <ul>
+                    <li><a href="https://www.facebook.com/darwin.deocampo.585">Facebook</a></li>
+                    <li><a href="https://www.instagram.com/n.drwinn?igsi=b2ltaWlpdW1ndzNi">Instagram</a></li>
+                    <li><a href="https://www.tiktok.com/@whin413">Tiktok</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Art Style</h4>
+                <ul>
+                    <li><a href="https://skyryedesign.com/art/12-pencil-drawing-ideas/">Pencil Art</a></li>
+                    <li><a href="https://kreska.art/">Digital Art</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCUQTqWAaSzhAKRanOpes1nA">Digital Painting</a></li>
+                    <li><a href="https://www.youtube.com/channel/UC2TDepkwM-AV5NbED6-jhdg">Charcoal Portraits</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCp1AdynFojb-WMTFG6KTcsg">Balllpoint</a></li>
+                </ul>
+            </div>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Stats Data - Updated to 12 artworks
+        const stats = [
+            { id: 'stat1', value: 12, suffix: '' },
+            { id: 'stat2', value: 4, suffix: '' },
+            { id: 'stat3', value: 0, suffix: '+' },
+            { id: 'stat4', value: 0, suffix: '' }
+        ];
+
+        // Modal Content
+        const modalContent = {
+            about: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🎨 About This Exhibition</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">This contemporary portrait exhibition showcases the incredible talent of emerging artists working in pencil, digital, charcoal, and watercolor mediums.</p>
+                <div style="background: var(--dark); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Featured Artists:</h4>
+                    <ul style="color: var(--text-muted); margin-left: 1.5rem; line-height: 2;">
+                        <li>✏️ ELY - Hyperrealistic pencil portraits</li>
+                        <li>💻 Darwin - Vibrant digital illustrations</li>
+                        <li>🎨 DC - Expressive digital paintings</li>
+                        <li>🖋️ Reign Lungalog - Soulful charcoal portraits</li>
+                    </ul>
+                </div>
+            `,
+            artwork1: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">✏️ Serene Gaze</h2>
+                <img src="ely.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> ELY | <strong>Medium:</strong> Graphite on Paper</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">This stunning pencil portrait demonstrates exceptional skill in capturing subtle facial features and creating depth through masterful shading techniques.</p>
+            `,
+            artwork2: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">✏️ Playful Expression</h2>
+                <img src="ely2.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> ELY | <strong>Medium:</strong> Graphite on Paper</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">A dynamic composition featuring a playful pose with hands framing the face, showcasing advanced understanding of anatomy and light.</p>
+            `,
+            artwork3: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">✏️ Winter Elegance</h2>
+                <img src="ely3.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> ELY | <strong>Medium:</strong> Graphite on Paper</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">Exquisite detail in rendering different textures - from soft fur to intricate hair - demonstrating exceptional skill in contrast and depth.</p>
+            `,
+            artwork4: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">💻 Digital Portrait Study</h2>
+                <img src="me.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> Darwin | <strong>Medium:</strong> Digital Illustration</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">A vibrant digital illustration featuring bold colors and expressive brushwork. The glasses frame a modern, relatable portrait full of personality.</p>
+            `,
+            artwork5: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🎨 Joyful Moment</h2>
+                <img src="m4.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> DC | <strong>Medium:</strong> Digital Painting</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">A striking portrait against a bold red background. The genuine smile and expressive eyes convey authentic happiness and warmth.</p>
+            `,
+            artwork6: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🍦 Flexing Ice Cream</h2>
+                <img src="me3.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> Darwin | <strong>Medium:</strong> Digital Painting</p>
+                <div class="quote-block quote-text" style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(139,92,246,0.1); border-radius: 12px;">
+                    "She saw the world clearly through her glasses and tasted its sweetness one scoop at a time."
+                </div>
+                <p style="color: var(--text-muted);">A playful digital portrait celebrating joy, clarity, and life's sweet moments. The glasses symbolize wisdom while the ice cream represents pure delight.</p>
+            `,
+            artwork7: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🖋️ Alina in Thought</h2>
+                <img src="reign3.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> Reign Lungalog | <strong>Medium:</strong> Charcoal on Paper</p>
+                <div class="quote-block quote-text" style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(139,92,246,0.1); border-radius: 12px;">
+                    "Half in shadow, half in light—she learned to belong to both without losing herself."
+                </div>
+                <p style="color: var(--text-muted);">A masterful charcoal study exploring duality and self-acceptance through dramatic light and shadow.</p>
+            `,
+            artwork8: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🖋️ Crowd of Morning Blossoms</h2>
+                <img src="reign.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> Reign Lungalog | <strong>Medium:</strong> Charcoal on Paper</p>
+                <div class="quote-block quote-text" style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(139,92,246,0.1); border-radius: 12px;">
+                    "Silence sat gently on her face, like a secret only the light could understand."
+                </div>
+                <p style="color: var(--text-muted);">A poetic charcoal portrait capturing the quiet beauty of introspection and the mysteries we keep within.</p>
+            `,
+            artwork9: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">🖋️ Final Voyage</h2>
+                <img src="reign2.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Artist:</strong> Reign Lungalog | <strong>Medium:</strong> Charcoal on Paper</p>
+                <div class="quote-block quote-text" style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(139,92,246,0.1); border-radius: 12px;">
+                    "She sailed not to escape the storm, but to become something the storm could not break."
+                </div>
+                <p style="color: var(--text-muted);">A powerful charcoal portrait embodying resilience, strength, and the transformative power of facing life's challenges.</p>
+            `,
+            artwork10: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">⚔️ Warrior's Strength</h2>
+                <img src="joel3.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Medium:</strong> Watercolor & Ink on Paper</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">A stunning watercolor illustration showcasing exceptional anatomical detail and character design. The piece features traditional Asian-inspired accessories and demonstrates masterful control of watercolor techniques combined with precise ink work.</p>
+            `,
+            artwork11: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">💗 Pink Dreams</h2>
+                <img src="joel2.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Medium:</strong> Mixed Media</p>
+                <div class="quote-block quote-text" style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(139,92,246,0.1); border-radius: 12px;">
+                    "In a world painted in shades of pink, she found her own unique hue."
+                </div>
+                <p style="color: var(--text-muted);">A mesmerizing monochromatic portrait rendered entirely in pink tones. The stylized features and intricate jewelry details create a dreamlike, ethereal quality that captivates the viewer.</p>
+            `,
+            artwork12: `
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">👑 Royal Heritage</h2>
+                <img src="joel.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--border);">
+                <p style="color: var(--text-muted);"><strong>Medium:</strong> Graphite & Charcoal on Paper</p>
+                <p style="color: var(--text-muted); margin: 1rem 0;">An exquisite photorealistic portrait featuring ornate traditional Asian costume with intricate dragon patterns and regal accessories. The masterful use of light and shadow brings out the luxurious textures and the subject's commanding presence.</p>
+            `
+        };
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                animateStats();
+            }, 1500);
+        });
+
+        // Animate Stats
+        function animateStats() {
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                const duration = 2000, steps = 60, increment = stat.value / steps;
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.value) { current = stat.value; clearInterval(timer); }
+                    element.textContent = Math.floor(current).toLocaleString() + stat.suffix;
+                }, duration / steps);
+            });
+        }
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = modalContent[type] || '<h2 style="color:var(--primary)">Content Coming Soon</h2>';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Scroll to Top
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.getElementById('scrollTop');
+            scrollTop.classList.toggle('visible', window.scrollY > 500);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        // Console Easter Egg
+        console.log('%c🎨 Welcome to Digital Art Museum!', 'font-size:20px;color:#8B5CF6;');
+        console.log('%cCelebrating Art, Quotes & Creativity', 'font-size:14px;color:#94A3B8;');
+    </script>
+</body>
+</html>

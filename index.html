@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darwin C. De Ocampo My Personal Portfolio</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cinzel@5.0.18/index.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-jp@5.0.18/latin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --water: #00d4ff;
+        --water-deep: #0066aa;
+        --water-glow: #4de8ff;
+        --red: #e63946;
+        --red-dark: #9d0208;
+        --wisteria: #b794f6;
+        --wisteria-dark: #6b46c1;
+        --gold: #f4d03f;
+        --bg-dark: #0a0e1a;
+        --bg-darker: #050810;
+        --bg-panel: rgba(10, 14, 26, 0.9);
+        --text: #e8eef7;
+        --text-dim: #8892a8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        background: var(--bg-dark);
+        color: var(--text);
+        font-family: 'Noto Serif JP', serif;
+        overflow-x: hidden;
+        cursor: none;
+    }
+
+    .cursor {
+        position: fixed;
+        width: 30px; height: 30px;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.2s ease;
+        mix-blend-mode: difference;
+    }
+    .cursor::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 20px; height: 2px;
+        background: linear-gradient(90deg, var(--water), transparent);
+        transform: translate(-50%, -50%) rotate(45deg);
+        box-shadow: 0 0 10px var(--water);
+    }
+    .cursor::after {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 4px; height: 4px;
+        background: var(--water);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 8px var(--water);
+    }
+    .cursor.slash { transform: scale(3) rotate(180deg); }
+
+    .bg-fixed {
+        position: fixed;
+        inset: 0;
+        background: url("japanese\ sakura.jpg") center/cover;
+        opacity: 0.15;
+        z-index: 0;
+        filter: brightness(0.6);
+    }
+    .bg-grid {
+        position: fixed;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 1;
+    }
+    #particles {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+    }
+    nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        padding: 1rem 2rem;
+        background: rgba(5, 8, 16, 0.85);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .nav-logo .kanji {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--red);
+        text-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+    }
+    .nav-logo .sub {
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        letter-spacing: 3px;
+    }
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+    }
+    .nav-links a {
+        color: var(--text-dim);
+        text-decoration: none;
+        font-family: 'Cinzel', serif;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: relative;
+        transition: color 0.3s;
+        padding: 0.5rem 0;
+    }
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 0; height: 1px;
+        background: var(--water);
+        transition: width 0.3s;
+        box-shadow: 0 0 5px var(--water);
+    }
+    .nav-links a:hover { color: var(--water); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-rank {
+        font-family: 'Cinzel', serif;
+        font-size: 0.8rem;
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        padding: 0.4rem 1rem;
+        letter-spacing: 2px;
+        text-shadow: 0 0 5px var(--gold);
+    }
+    .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 6rem 2rem 2rem;
+        overflow: hidden;
+        z-index: 3;
+    }
+    .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: url("japanese\ sakura.jpg") center/cover;
+        opacity: 0.4;
+        filter: brightness(0.7) contrast(1.1);
+        z-index: -1;
+    }
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(5, 8, 16, 0.95) 0%, rgba(5, 8, 16, 0.7) 50%, rgba(5, 8, 16, 0.4) 100%);
+        z-index: -1;
+    }
+    .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    .hero-kanji {
+        font-family: 'Noto Serif JP', serif;
+        font-size: clamp(4rem, 12vw, 9rem);
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 2px var(--water);
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        opacity: 0.3;
+        z-index: -1;
+        letter-spacing: 10px;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        color: var(--water);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        padding: 0.5rem 1.5rem;
+        border-left: 3px solid var(--red);
+        background: rgba(0, 212, 255, 0.05);
+        animation: fadeInLeft 1s ease;
+    }
+    .hero-badge .dot {
+        width: 8px; height: 8px;
+        background: var(--red);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--red);
+        animation: pulse 2s infinite;
+    }
+    .hero-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(3rem, 7vw, 6rem);
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 1rem;
+        animation: fadeInUp 1s ease 0.2s backwards;
+    }
+    .hero-title .first { display: block; color: var(--text); text-shadow: 0 0 30px rgba(255,255,255,0.2); }
+    .hero-title .last {
+        display: block;
+        background: linear-gradient(135deg, var(--water) 0%, var(--wisteria) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1.3rem;
+        color: var(--red);
+        letter-spacing: 6px;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+        animation: fadeInUp 1s ease 0.4s backwards;
+    }
+    .hero-desc {
+        font-size: 1.1rem;
+        color: var(--text-dim);
+        line-height: 1.8;
+        max-width: 550px;
+        margin-bottom: 2.5rem;
+        animation: fadeInUp 1s ease 0.6s backwards;
+    }
+    .hero-cta {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease 0.8s backwards;
+    }
+    .hero-image {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        animation: fadeInUp 1s ease 0.5s backwards;
+    }
+    .profile-container {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        aspect-ratio: 3/4;
+    }
+    .profile-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--water-deep), var(--wisteria-dark));
+        border-radius: 5px;
+        transform: rotate(3deg);
+        opacity: 0.6;
+    }
+    .profile-img {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 2px solid rgba(0, 212, 255, 0.4);
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
+    }
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: brightness(1.05) contrast(1.1);
+    }
+    .profile-img::after {
+        content: '水';
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        font-family: 'Noto Serif JP', serif;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: var(--water);
+        opacity: 0.4;
+        text-shadow: 0 0 20px var(--water);
+    }
+
+    .btn {
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        padding: 1rem 2.5rem;
+        border: 2px solid var(--water);
+        background: rgba(0, 212, 255, 0.08);
+        color: var(--water);
+        cursor: none;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+        transition: left 0.6s;
+    }
+    .btn:hover::before { left: 100%; }
+    .btn:hover {
+        background: var(--water);
+        color: var(--bg-dark);
+        box-shadow: 0 0 30px var(--water), inset 0 0 20px rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+    .btn.red {
+        border-color: var(--red);
+        background: rgba(230, 57, 70, 0.08);
+        color: var(--red);
+    }
+    .btn.red::before {
+        background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.3), transparent);
+    }
+    .btn.red:hover {
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 0 30px var(--red);
+    }
+    .slash-divider {
+        position: relative;
+        height: 80px;
+        overflow: hidden;
+        z-index: 3;
+    }
+    .slash-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--water), var(--wisteria), transparent);
+        box-shadow: 0 0 20px var(--water);
+        animation: slash 2s ease-in-out infinite;
+    }
+    .slash-line:nth-child(2) { animation-delay: 0.3s; top: 45%; }
+    .slash-line:nth-child(3) { animation-delay: 0.6s; top: 55%; }
+    section {
+        position: relative;
+        padding: 6rem 2rem;
+        z-index: 3;
+    }
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        position: relative;
+    }
+    .section-kanji {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 5rem;
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(0, 212, 255, 0.2);
+        position: absolute;
+        top: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+        letter-spacing: 20px;
+    }
+    .section-label {
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        color: var(--water);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        color: var(--text);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+    .section-subtitle {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1rem;
+        color: var(--text-dim);
+        letter-spacing: 3px;
+    }
+
+    .about-section {
+        background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+    }
+    .about-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    .about-image {
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+        aspect-ratio: 3/4;
+        background: linear-gradient(135deg, var(--water-deep), var(--wisteria-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: brightness(1.05) contrast(1.1);
+    }
+    .about-image::after {
+        content: '水';
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-family: 'Noto Serif JP', serif;
+        font-size: 4rem;
+        font-weight: 900;
+        color: var(--water);
+        opacity: 0.3;
+        text-shadow: 0 0 20px var(--water);
+        z-index: 2;
+    }
+    .about-content h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        color: var(--water);
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+    }
+    .about-content .jp-title {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1rem;
+        color: var(--red);
+        letter-spacing: 4px;
+        margin-bottom: 2rem;
+    }
+    .about-content p {
+        color: var(--text-dim);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+    .about-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(0, 212, 255, 0.2);
+    }
+    .about-stat { text-align: center; }
+    .about-stat .num {
+        font-family: 'Cinzel', serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--water);
+        text-shadow: 0 0 15px var(--water);
+        display: block;
+    }
+    .about-stat .label {
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    .projects-section {
+        background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    }
+    .projects-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+    .project-card {
+        background: var(--bg-panel);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 5px;
+        overflow: hidden;
+        transition: all 0.4s;
+        position: relative;
+    }
+    .project-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--water);
+        box-shadow: 0 20px 50px rgba(0, 212, 255, 0.25);
+    }
+    .project-image {
+        height: 200px;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(183, 148, 246, 0.15));
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: var(--water);
+    }
+    .project-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 50%, var(--bg-panel) 100%);
+    }
+    .project-rank {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-family: 'Cinzel', serif;
+        font-weight: 900;
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+        border-radius: 3px;
+        z-index: 2;
+        letter-spacing: 2px;
+    }
+    .rank-muzan { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
+    .rank-upper { background: var(--wisteria-dark); color: #fff; box-shadow: 0 0 15px var(--wisteria); }
+    .project-content { padding: 1.5rem; }
+    .project-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.3rem;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .project-desc {
+        color: var(--text-dim);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .project-tag {
+        font-family: 'Cinzel', serif;
+        font-size: 0.7rem;
+        color: var(--water);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        padding: 0.2rem 0.6rem;
+        letter-spacing: 1px;
+    }
+    .project-link {
+        font-family: 'Cinzel', serif;
+        color: var(--water);
+        text-decoration: none;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .project-link:hover { color: var(--red); text-shadow: 0 0 10px var(--red); }
+
+    .contact-section {
+        background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+    }
+    .contact-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 3rem;
+    }
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.2rem;
+        background: var(--bg-panel);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+    .contact-info-item:hover {
+        border-color: var(--water);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        transform: translateX(5px);
+    }
+    .contact-icon {
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, var(--water-deep), var(--wisteria-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+    .contact-info-item h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        color: var(--water);
+        letter-spacing: 2px;
+        margin-bottom: 0.3rem;
+    }
+    .contact-info-item p, .contact-info-item a {
+        color: var(--text-dim);
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .contact-info-item a:hover { color: var(--water); }
+
+    .contact-form-wrapper {
+        background: var(--bg-panel);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 5px;
+        padding: 2.5rem;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+    .contact-form-wrapper::before {
+        content: '使命';
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-family: 'Noto Serif JP', serif;
+        font-size: 5rem;
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(0, 212, 255, 0.1);
+        z-index: 0;
+    }
+    .contact-form {
+        display: grid;
+        gap: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    .form-group { position: relative; }
+    .form-group label {
+        display: block;
+        font-family: 'Cinzel', serif;
+        font-size: 0.8rem;
+        color: var(--water);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+    .form-group input, .form-group textarea {
+        width: 100%;
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 3px;
+        padding: 1rem;
+        color: var(--text);
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1rem;
+        transition: all 0.3s;
+        cursor: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+        outline: none;
+        border-color: var(--water);
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        background: rgba(0, 212, 255, 0.1);
+    }
+    .form-group textarea { min-height: 150px; resize: vertical; }
+
+    .submit-btn {
+        font-family: 'Cinzel', serif;
+        font-size: 1rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, var(--water-deep), var(--wisteria-dark));
+        color: #fff;
+        border: 2px solid var(--water);
+        border-radius: 3px;
+        cursor: none;
+        transition: all 0.3s;
+        font-weight: 700;
+    }
+    .submit-btn:hover {
+        background: var(--water);
+        color: var(--bg-dark);
+        box-shadow: 0 0 30px var(--water);
+        transform: translateY(-3px);
+    }
+
+
+    footer {
+        background: rgba(5, 8, 16, 0.95);
+        border-top: 1px solid rgba(0, 212, 255, 0.3);
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        z-index: 3;
+    }
+    .footer-kanji {
+        font-family: 'Noto Serif JP', serif;
+        font-size: 1.5rem;
+        color: var(--red);
+        letter-spacing: 10px;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+    }
+    .footer-text {
+        font-family: 'Cinzel', serif;
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+    }
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    .social-link {
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        background: var(--bg-panel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--water);
+        font-size: 1.2rem;
+        transition: all 0.3s;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        text-decoration: none;
+    }
+    .social-link:hover {
+        background: var(--water);
+        color: var(--bg-dark);
+        transform: translateY(-5px) rotate(10deg);
+        box-shadow: 0 0 20px var(--water);
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse { 50% { opacity: 0.3; } }
+    @keyframes slash {
+        0% { left: -20%; width: 0; opacity: 0; }
+        30% { opacity: 1; }
+        60% { left: 120%; width: 40%; opacity: 0; }
+        100% { left: 120%; width: 0; opacity: 0; }
+    }
+    @keyframes clickSlash {
+        0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scaleX(0); }
+        50% { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scaleX(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) scaleX(1.5); }
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s ease;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+        .hero-content { grid-template-columns: 1fr; gap: 2rem; }
+        .hero-image { order: -1; max-width: 320px; margin: 0 auto; }
+        .about-container { grid-template-columns: 1fr; gap: 2rem; }
+        .contact-container { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+        .nav-links, .nav-rank { display: none; }
+        .about-stats { grid-template-columns: repeat(3, 1fr); }
+        .contact-form-wrapper { padding: 2rem 1.5rem; }
+        body { cursor: auto; }
+        .cursor { display: none; }
+        .btn, .project-card, .form-group input, .form-group textarea, .submit-btn { cursor: pointer; }
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-darker); }
+    ::-webkit-scrollbar-thumb { background: var(--water); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--wisteria); }
+  </style>
+</head>
+<body>
+    
+    <div id="video-container">
+    <video preload="auto" autoplay="autoplay" type="video/mp4" src="japan.mp4" loop height="30%" width="100%"></video>
+  <div class="bg-fixed"></div>
+  <div class="bg-grid"></div>
+  <canvas id="particles"></canvas>
+  <div class="cursor"></div>
+
+  <nav>
+    <div class="nav-logo">
+      <span class="kanji">水</span>
+      <div>
+        <div style="font-family: 'Cinzel', serif; font-weight: 700; letter-spacing: 2px; color: var(--text);">DARWIN</div>
+        <div class="sub">DE OCAMPO</div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  
+  <section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-kanji">水</div>
+        <div class="hero-badge">
+        </div>
+        <h1 class="hero-title">
+          <span class="first">Darwin C.</span>
+          <span class="last">De Ocampo</span>
+        </h1>
+        <div class="hero-subtitle">20 Years Old · Tuy, Batangas, Philippines</div>
+        <p class="hero-desc">
+          Born on August 13, 2006. A passionate developer creating digital experiences that make a difference. 
+          Specializing in front-end development with a strong foundation in HTML, CSS, C++, and JavaScript.
+        </p>
+        <div class="hero-cta">
+          <a href="#about" class="btn"><i class="fas fa-user"></i> About Me</a>
+          <a href="#projects" class="btn red"><i class="fas fa-code"></i> My Projects</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="profile-container">
+          <div class="profile-bg"></div>
+          <div class="profile-img">
+            
+            <img src="darwin.png" alt="Darwin C. De Ocampo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slash-divider">
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="section-header reveal">
+      <div class="section-label">About</div>
+      <h2 class="section-title">My personal Porfolio</h2>
+      <p class="section-subtitle">A journey through code and creativity</p>
+    </div>
+    <div class="about-container">
+      <div class="about-image reveal">
+        <img src="darwin.png" alt="Darwin">
+      </div>
+      <div class="about-content reveal">
+        <h3>Hello, I'm Darwin</h3>
+        <div class="jp-title">Comsci 3rd year</div>
+        <p>Hello! I'm Darwin, a young and enthusiastic developer with a passion for creating innovative solutions. Born on August 13, 2006, I've been fascinated by technology from an early age.</p>
+        <p>I specialize in front-end development with a strong foundation in HTML, CSS, and JavaScript. I'm constantly learning new technologies and frameworks to stay at the forefront of web development.</p>
+        <p>When I'm not coding, you can find me exploring new design trends, contributing to open-source projects, or playing basketball with friends.</p>
+        <div class="about-stats">
+          <div class="about-stat">
+            <span class="num" data-target="6">0</span>
+            <span class="label">Projects</span>
+          </div>
+          <div class="about-stat">
+            <span class="num" data-target="6">0</span>
+            <span class="label">Core Skills</span>
+          </div>
+          <div class="about-stat">
+            <span class="num" data-target="20">0</span>
+            <span class="label">Years Old</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="slash-divider">
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+  </div>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Completed Projects</h2>
+      <p class="section-subtitle">Forged through dedication and discipline</p>
+    </div>
+    <div class="projects-grid">
+      <!-- To-Do List Project -->
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-tasks"></i>
+          <div class="fa-image"></div>
+          <img src="todolist.webp" alt="To-Do List Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">To-Do List with Alarm</h3>
+          <p class="project-desc">A feature-rich task manager with reminder notifications, priority levels, and recurring tasks. Includes a built-in alarm system for important deadlines.</p>
+          <div class="project-tags">
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+          </div>
+          <a href="to-do list.html" class="project-link"><i class="fas fa-arrow-right"></i> View Project</a>
+        </div>
+      </div>
+      
+      <!-- Tree Planting Donation -->
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-seedling"></i>
+          <img src="treeplanting.jpg" alt="Tree Planting Donation Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Tree Planting Donation</h3>
+          <p class="project-desc">A website where you can donate any amount of money to buy a plant/tree and help make the Earth beautiful with fresh air.</p>
+          <div class="project-tags">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+          </div>
+          <a href="tree planting donation.html" class="project-link"><i class="fas fa-arrow-right"></i> View Project</a>
+        </div>
+      </div>
+      
+      <!-- Online Shoe Store -->
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-shoe-prints"></i>
+          <img src="online-shopping-and-e-commerce-concept-free-photo.jpg" alt="Online Shoe Store Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Online Shoe Store</h3>
+          <p class="project-desc">A responsive e-commerce platform for footwear with product filtering, size selection, cart functionality, and secure checkout process.</p>
+          <div class="project-tags">
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">Node.js</span>
+            <span class="project-tag">HTML</span>
+          </div>
+          <a href="shoe online shop.html" class="project-link"><i class="fas fa-arrow-right"></i> View Project</a>
+        </div>
+      </div>
+      
+      <!-- School Management System -->
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-school"></i>
+          <img src="school.jpg" alt="School Management System Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">School Management System</h3>
+          <p class="project-desc">A comprehensive solution for educational institutions featuring student records, attendance tracking, grade management, and teacher portals.</p>
+          <div class="project-tags">
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">Python</span>
+          </div>
+          <a href="system.html" class="project-link"><i class="fas fa-arrow-right"></i> View Project</a>
+        </div>
+      </div>
+    </div>
+
+    <!--Museum-->
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-landmark"></i>
+          <img src="museum.jpg" alt="Museum Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Museum</h3>
+          <p class="project-desc">A virtual museum experience showcasing art, history, and culture with interactive exhibits and educational resources.</p>
+          <div class="project-tags">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+          </div>
+          <a href="museum.html" class="project-link"><i class="fas fa-arrow-right"></i> View Project</a>
+        </div>
+      </div>
+      </section>
+
+      <!--Demo-->
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-image">
+          <i class="fas fa-desktop"></i>
+          <img src="demo.jpg" alt="Demo Project" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Demo</h3>
+          <p class="project-desc">A placeholder for demo content, showcasing interactive elements and features of upcoming projects.</p>
+          <div class="project-tags">
+            <span class="project-tag">C++</span>
+          </div>
+          <a href="demo.html" class="project-link"><i class="fas fa-arrow-right"></i> View Demo</a>
+        </div>
+      </div>
+</div>
+  <div class="slash-divider">
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+    <div class="slash-line"></div>
+  </div>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="section-header reveal">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Send a Message</h2>
+      <p class="section-subtitle">Your message will reach me in my social media account.</p>
+    </div>
+    <div class="contact-container">
+      <div class="contact-info reveal">
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <h4>Email</h4>
+            <a href="https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/?hl%3Den&emr=1&hl=en&ltmpl=default&ltmplcache=2&osid=1&passive=true&scc=1&service=mail&ss=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1052947716:1787492666581668">callodeocampodarwin@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <h4>Location</h4>
+            <p>Tuy, Sabang, Batangas, Philippines</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <h4>Phone</h4>
+            <p>+63 994 101 2466</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fab fa-facebook-f"></i></div>
+          <div>
+            <h4>Facebook</h4>
+            <a href="https://www.facebook.com/darwin.deocampo.585" target="_blank">Connect on Facebook</a>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+          <div>
+            <h4>Instagram</h4>
+            <a href="https://www.instagram.com/n.drwinn?igsi=b2ltaWlpdW1ndzNi">@darwin.deocampo</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form-wrapper reveal">
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Your Message</label>
+            <textarea id="message" placeholder="Write your message here..." required></textarea>
+          </div>
+          <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Dispatch Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://www.tiktok.com/@whin413" class="social-link"><i class="fab fa-tiktok"></i></a>
+      <a href="mailto:callodeocampodarwin@gmail.com" class="social-link"><i class="fab fa-mail"></i></a>
+      <a href="https://www.facebook.com/darwin.deocampo.585" class="social-link"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/n.drwinn?igsi=b2ltaWlpdW1ndzNi" class="social-link"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p class="footer-text">© 2026 Darwin C. De Ocampo · All Rights Reserved </p>
+  </footer>
+
+ 
+  <script>
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = (e.clientX - 15) + 'px';
+      cursor.style.top = (e.clientY - 15) + 'px';
+    });
+    document.querySelectorAll('a, button, .project-card, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('slash'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('slash'));
+    });
+
+    // Particle System
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 1 + 0.3;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        this.type = Math.random() > 0.5 ? 'petal' : 'drop';
+        this.color = this.type === 'petal' ? `rgba(183, 148, 246, ${this.opacity})` : `rgba(0, 212, 255, ${this.opacity * 0.5})`;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.y * 0.01) * 0.3;
+        this.rotation += this.rotationSpeed;
+        if (this.y > canvas.height + 20) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        if (this.type === 'petal') {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size * 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+    for (let i = 0; i < 60; i++) {
+      const p = new Particle();
+      p.y = Math.random() * canvas.height;
+      particles.push(p);
+    }
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Scroll Reveal & Number Animation
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          entry.target.querySelectorAll('.num').forEach(num => {
+            const target = parseInt(num.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+            function update(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              num.textContent = Math.floor(target * eased);
+              if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+          });
+        }
+      });
+    }, { threshold: 0.15 });
+    revealElements.forEach(el => observer.observe(el));
+
+    // Form Submit Animation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.submit-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-crow"></i> Crow Dispatched...';
+      btn.style.background = 'linear-gradient(135deg, var(--red-dark), var(--red))';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i> Message Received by Hashira';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          e.target.reset();
+        }, 2500);
+      }, 1500);
+    });
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Click Slash Effect
+    document.addEventListener('click', (e) => {
+      const slash = document.createElement('div');
+      const angle = Math.random() * 180;
+      slash.style.cssText = `
+        position: fixed; left: ${e.clientX}px; top: ${e.clientY}px;
+        width: 100px; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--water), transparent);
+        transform: translate(-50%, -50%) rotate(${angle}deg);
+        pointer-events: none; z-index: 9998;
+        box-shadow: 0 0 10px var(--water);
+        animation: clickSlash 0.6s ease-out forwards;
+      `;
+      document.body.appendChild(slash);
+      setTimeout(() => slash.remove(), 600);
+    });
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes clickSlash {
+        0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scaleX(0); }
+        50% { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scaleX(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) scaleX(1.5); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

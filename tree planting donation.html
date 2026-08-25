@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Earth - Tree Planting Donation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f9e6, #c2e9c2);
+            color: #2c5e2d;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #1a4d1c;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #3a7a3c;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .donation-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .donation-section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c5e2d;
+            font-size: 1.8rem;
+        }
+
+        .amount-selection {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .amount-btn {
+            background: #e6f9e6;
+            border: 2px solid #8bc34a;
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: calc(25% - 10px);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .amount-btn:hover, .amount-btn.active {
+            background: #8bc34a;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .custom-amount {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #8bc34a;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #8bc34a;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .donate-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .donate-btn:hover {
+            background: #3d8b40;
+        }
+
+        .impact-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .impact-section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c5e2d;
+            font-size: 1.8rem;
+        }
+
+        .tree-visualization {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .tree {
+            position: relative;
+            width: 150px;
+            height: 200px;
+        }
+
+        .trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 80px;
+            background: #8B4513;
+            z-index: 1;
+        }
+
+        .leaves {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            background: #4CAF50;
+            border-radius: 50%;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #2E7D32;
+            border-radius: 50%;
+        }
+
+        .leaf:nth-child(1) { top: 20px; left: 20px; }
+        .leaf:nth-child(2) { top: 20px; right: 20px; }
+        .leaf:nth-child(3) { bottom: 20px; left: 20px; }
+        .leaf:nth-child(4) { bottom: 20px; right: 20px; }
+        .leaf:nth-child(5) { top: 40px; left: 50%; transform: translateX(-50%); }
+        .leaf:nth-child(6) { bottom: 40px; left: 50%; transform: translateX(-50%); }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #e6f9e6;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #8bc34a;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .stat-card h3 {
+            font-size: 1.8rem;
+            color: #2c5e2d;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #3a7a3c;
+        }
+
+        .testimonials {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c5e2d;
+            font-size: 1.8rem;
+        }
+
+        .testimonial-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .testimonial-card {
+            background: #f8fff8;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid #8bc34a;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #3a7a3c;
+        }
+
+        .testimonial-card .author {
+            font-weight: bold;
+            color: #2c5e2d;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #3a7a3c;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .amount-btn {
+                width: calc(50% - 10px);
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tree"></i> Green Earth Initiative</h1>
+            <p>Plant a tree, grow a future. Your donation helps us plant trees and create a sustainable environment for generations to come.</p>
+        </header>
+
+        <div class="main-content">
+            <div class="donation-section">
+                <h2>Plant Trees with Your Donation</h2>
+                
+                <div class="amount-selection">
+                    <div class="amount-btn active">₱ 110</div>
+                    <div class="amount-btn">₱235</div>
+                    <div class="amount-btn">₱500</div>
+                    <div class="amount-btn">₱ 1000</div>
+                </div>
+                
+                <div class="custom-amount">
+                    <label for="custom-amount">Or enter custom amount:</label>
+                    <input type="number" id="custom-amount" placeholder="Enter amount" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Planting Location</label>
+                    <select id="location">
+                        <option value="">Select a location</option>
+                        <option value="north-america">Nasugbu batangas</option>
+                        <option value="south-america">Calatagan batangas</option>
+                        <option value="europe">tuy batangas</option>
+                        <option value="africa">lian batangas</option>
+                        <option value="asia">taal batangas</option>
+                        <option value="oceania">balayan batangas</option>
+                    </select>
+                </div>
+                
+                <button class="donate-btn">DONATE NOW</button>
+            </div>
+            
+            <div class="impact-section">
+                <h2>Your Impact</h2>
+                
+                <div class="tree-animation">
+                    <div class="tree">
+                        <div class="trunk"></div>
+                        <div class="leaves">
+                            <div class="leaf"></div>
+                            <div class="leaf"></div>
+                            <div class="leaf"></div>
+                            <div class="leaf"></div>
+                            <div class="leaf"></div>
+                            <div class="leaf"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; margin-bottom: 20px; color: #3a7a3c;">
+                    Each ₱ 220 donation plants one tree that will absorb CO₂, provide oxygen, and support biodiversity for decades.
+                </p>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <i class="fas fa-tint"></i>
+                        <h3>1000L</h3>
+                        <p>Water filtered annually</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-wind"></i>
+                        <h3>22kg</h3>
+                        <p>CO₂ absorbed annually</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-seedling"></i>
+                        <h3>400L</h3>
+                        <p>Oxygen produced daily</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-tree"></i>
+                        <h3>100+</h3>
+                        <p>Years of life</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonials">
+            <h2>What Our Donors Say</h2>
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <p>"I've donated to Green Earth for three years now. It feels great knowing that my contribution is literally helping the planet breathe better."</p>
+                    <div class="author">- Sarah Johnson</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The transparency of this organization is impressive. I can see exactly where my tree was planted and how it's growing. Highly recommended!"</p>
+                    <div class="author">- Michael Chen</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"As a teacher, I involve my students in these donations. It's an excellent way to teach environmental responsibility and see real impact."</p>
+                    <div class="author">- Emma Rodriguez</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Green Earth Initiative | Planting trees, growing hope</p>
+            <p>Contact us: info@greenearth.org | +(63) 994 101 2466</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple interactivity for the donation buttons
+        document.querySelectorAll('.amount-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.amount-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Update custom amount field with selected value
+                const amount = this.textContent.replace('$', '');
+                document.getElementById('custom-amount').value = amount;
+            });
+        });
+        
+        // Add hover effect to donate button
+        const donateBtn = document.querySelector('.donate-btn');
+        donateBtn.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+        });
+        donateBtn.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

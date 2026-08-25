@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUCon - Central University College of Nasugbu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: red; /* Deep blue - CUCon colors */
+            --secondary-color: #3b82f6; /* Blue */
+            --accent-color: #f59e0b; /* Gold/amber */
+            --success-color: #10b981; /* Green */
+            --warning-color: #f59e0b; /* Amber */
+            --danger-color: #ef4444; /* Red */
+            --dark-color: #1e293b; /* Dark blue-gray */
+            --light-color: #f8fafc; /* Light blue-gray */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f98d;
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            background-image: url(school.jpg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('school.jpg');
+            background-size: cover;      
+            background-position: center;  
+            background-repeat: no-repeat; 
+            width: 100vw;                 
+            height: 100vh;               
+}
+        .auth-container::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 0;
+}
+        .auth-container > * { 
+            position: relative;
+            z-index: 1; 
+}
+        
+        .auth-card {
+            background: rgba(255, 255, 255, 0.441);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: rgba(255, 255, 255, 0.453);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .cucon-logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        
+        .auth-body {
+            padding: 40px;
+        }
+        
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cucon-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .cucon-header-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 15px 20px;
+        }
+        
+        .teacher-card {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .teacher-avatar {
+            width: 120px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .teacher-info {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .teacher-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .teacher-subject {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .teacher-details {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .teacher-contact {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-edit {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #d97706;
+        }
+        
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-on-leave {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+        
+        .logout-btn {
+            background: var(--danger-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .stat-title {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .nasugbu-location {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .cucon-full-name {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="auth-container" class="auth-container">
+    
+        <div id="login-form" class="auth-card">
+            <div class="auth-header">
+                <div class="cucon-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2>CUCON</h2>
+                <p class="cucon-full-name">Central University College of Nasugbu</p>
+                <p class="nasugbu-location"><i class="fas fa-map-marker-alt me-1"></i> Nasugbu, Batangas</p>
+                <p class="mt-2">Sign in to your account</p>
+            </div>
+            <div class="auth-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Enter your CUCon email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? <a href="#" id="showRegister" class="text-decoration-none">Register now</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+        <div id="register-form" class="auth-card hidden">
+            <div class="auth-header">
+                <div class="cucon-logo">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2>Create Account</h2>
+                <p class="cucon-full-name">Central University College of Nasugbu</p>
+                <p class="nasugbu-location"><i class="fas fa-map-marker-alt me-1"></i> Nasugbu, Batangas</p>
+                <p class="mt-2">Register for CUCon Portal</p>
+            </div>
+            <div class="auth-body">
+                <form id="registerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">CUCon Email Address</label>
+                        <input type="email" class="form-control" id="registerEmail" placeholder="name@cucon.edu.ph" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" placeholder="Create password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userRole" class="form-label">Role</label>
+                        <select class="form-select" id="userRole" required>
+                            <option value="">Select Your Role</option>
+                            <option value="admin">Administrator</option>
+                            <option value="faculty">Faculty Member</option>
+                            <option value="student">Student</option>
+                            <option value="staff">Staff Member</option>
+                            <option value="parent">Parent/Guardian</option>
+                            <option value="teacher">teacher</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? <a href="#" id="showLogin" class="text-decoration-none">Sign in</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard (Hidden initially) -->
+    <div id="dashboard" class="hidden">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="p-4 text-white text-center">
+                <div class="cucon-logo mb-2">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h5 class="mb-1">CUCON</h5>
+                <p class="cucon-full-name mb-0">Central University College</p>
+                <p class="nasugbu-location mb-0">Nasugbu, Batangas</p>
+            </div>
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#dashboard-content" data-tab="dashboard-content">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#faculty" data-tab="faculty">
+                        <i class="fas fa-chalkboard-teacher"></i> Faculty Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#students" data-tab="students">
+                        <i class="fas fa-user-graduate"></i> Student Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#courses" data-tab="courses">
+                        <i class="fas fa-book"></i> Courses & Programs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#attendance" data-tab="attendance">
+                        <i class="fas fa-calendar-check"></i> Attendance Tracking
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#fees" data-tab="fees">
+                        <i class="fas fa-money-bill-wave"></i> Fee Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#exams" data-tab="exams">
+                        <i class="fas fa-file-alt"></i> Exams & Grades
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#reports" data-tab="reports">
+                        <i class="fas fa-chart-bar"></i> Reports & Analytics
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="cucon-header">
+                    <div class="cucon-header-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h2 id="page-title">Dashboard</h2>
+                        <p class="mb-0 nasugbu-location">Central University College of Nasugbu</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span id="user-name" class="me-3">Admin User</span>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt me-1"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="dashboard-content" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-primary"></i>
+                        <div class="stat-number" id="total-faculty">42</div>
+                        <div class="stat-title">Total Faculty Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-graduate fa-2x text-success"></i>
+                        <div class="stat-number" id="total-students">2,847</div>
+                        <div class="stat-title">Total Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-book fa-2x text-warning"></i>
+                        <div class="stat-number" id="total-courses">18</div>
+                        <div class="stat-title">Academic Programs</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check fa-2x text-info"></i>
+                        <div class="stat-number">96%</div>
+                        <div class="stat-title">Avg Attendance Rate</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Recent Faculty Activity</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-list">
+                                    <div class="d-flex mb-3">
+                                        <div class="me-3">
+                                            <i class="fas fa-user-plus text-success"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Dr. Maria Santos</strong> joined as Professor of Mathematics
+                                            <div class="text-muted small">2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <div class="me-3">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Prof. Juan Dela Cruz</strong> updated grade records for BS Computer Science
+                                            <div class="text-muted small">4 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <div class="me-3">
+                                            <i class="fas fa-calendar-check text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Ms. Ana Reyes</strong> marked attendance for BA Psychology
+                                            <div class="text-muted small">6 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-money-bill-wave text-danger"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Fee Payment</strong> received from Student ID: 2024-00156
+                                            <div class="text-muted small">8 hours ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Faculty Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    <div class="stat-number">15</div>
+                                    <div class="stat-title">College of Arts & Sciences</div>
+                                </div>
+                                <div class="text-center mb-3">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-title">College of Business & Accountancy</div>
+                                </div>
+                                <div class="text-center mb-3">
+                                    <div class="stat-number">8</div>
+                                    <div class="stat-title">College of Computer Studies</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="stat-number">7</div>
+                                    <div class="stat-title">College of Education</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Faculty Management -->
+            <div id="faculty" class="tab-content hidden">
+                <div class="d-flex justify-content-between mb-3">
+                    <h3>Faculty Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#facultyModal">
+                        <i class="fas fa-plus"></i> Add Faculty Member
+                    </button>
+                </div>
+                <div id="faculty-list">
+                    <!-- Faculty cards will be populated here -->
+                </div>
+            </div>
+
+           <!-- Student Management -->
+<div id="students" class="tab-content hidden">
+    <h3>Student Management</h3>
+    <form id="studentForm" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" id="studentFirstName" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="studentLastName" class="form-control" placeholder="Last Name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="email" id="studentEmail" class="form-control" placeholder="Email" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Student</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+        </thead>
+        <tbody id="studentsTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Courses & Programs -->
+<div id="courses" class="tab-content hidden">
+    <h3>Courses & Programs</h3>
+    <form id="courseForm" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" id="courseCode" class="form-control" placeholder="Course Code" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="courseName" class="form-control" placeholder="Course Name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="number" id="courseCredits" class="form-control" placeholder="Credits" min="1" max="10" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Course</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Code</th><th>Name</th><th>Credits</th></tr>
+        </thead>
+        <tbody id="coursesTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Attendance Tracking -->
+<div id="attendance" class="tab-content hidden">
+    <h3>Attendance Tracking</h3>
+    <form id="attendanceForm" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" id="attendanceStudent" class="form-control" placeholder="Student Name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="date" id="attendanceDate" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <select id="attendanceStatus" class="form-select" required>
+                    <option value="">Select Status</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                    <option value="Excused">Excused</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Attendance</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Student</th><th>Date</th><th>Status</th></tr>
+        </thead>
+        <tbody id="attendanceTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Fee Management -->
+<div id="fees" class="tab-content hidden">
+    <h3>Fee Management</h3>
+    <form id="feeForm" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" id="feeStudent" class="form-control" placeholder="Student Name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="number" id="feeAmount" class="form-control" placeholder="Amount" min="0" step="0.01" required>
+            </div>
+            <div class="col-md-4">
+                <input type="date" id="feeDueDate" class="form-control" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Fee Record</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Student</th><th>Amount</th><th>Due Date</th></tr>
+        </thead>
+        <tbody id="feesTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Exams & Grades -->
+<div id="exams" class="tab-content hidden">
+    <h3>Exams & Grades</h3>
+    <form id="examForm" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input type="text" id="examStudent" class="form-control" placeholder="Student Name" required>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="examCourse" class="form-control" placeholder="Course" required>
+            </div>
+            <div class="col-md-3">
+                <input type="date" id="examDate" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="examGrade" class="form-control" placeholder="Grade" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Exam Record</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Student</th><th>Course</th><th>Date</th><th>Grade</th></tr>
+        </thead>
+        <tbody id="examsTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Reports & Analytics -->
+<div id="reports" class="tab-content hidden">
+    <h3>Reports & Analytics</h3>
+    <p>Generate reports for:</p>
+    <ul>
+        <li><button class="btn btn-outline-primary mb-2" id="generateStudentReport">Student Report</button></li>
+        <li><button class="btn btn-outline-primary mb-2" id="generateCourseReport">Course Report</button></li>
+        <li><button class="btn btn-outline-primary mb-2" id="generateAttendanceReport">Attendance Report</button></li>
+        <li><button class="btn btn-outline-primary mb-2" id="generateFeeReport">Fee Report</button></li>
+        <li><button class="btn btn-outline-primary mb-2" id="generateExamReport">Exam Report</button></li>
+    </ul>
+    <div id="reportOutput" class="mt-3"></div>
+</div>
+
+    <!-- Faculty Modal -->
+    <div class="modal fade" id="facultyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Add New Faculty Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="facultyForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="facultyFirstName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="facultyLastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="facultyEmail" placeholder="name@cucon.edu.ph" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="facultyPhone" placeholder="+63 9xx xxx xxxx">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Academic Rank *</label>
+                                    <select class="form-select" id="facultyRank" required>
+                                        <option value="">Select Rank</option>
+                                        <option>Professor</option>
+                                        <option>Associate Professor</option>
+                                        <option>Assistant Professor</option>
+                                        <option>Instructor</option>
+                                        <option>Lecturer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Department/College *</label>
+                                    <select class="form-select" id="facultyDepartment" required>
+                                        <option value="">Select Department</option>
+                                        <option>College of Arts & Sciences</option>
+                                        <option>College of Business & Accountancy</option>
+                                        <option>College of Computer Studies</option>
+                                        <option>College of Education</option>
+                                        <option>College of Engineering</option>
+                                        <option>College of Health Sciences</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Specialization/Subject Area *</label>
+                                    <input type="text" class="form-control" id="facultySpecialization" placeholder="e.g., Mathematics, Computer Science" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Highest Educational Attainment *</label>
+                                    <select class="form-select" id="facultyEducation" required>
+                                        <option value="">Select Level</option>
+                                        <option>Doctorate (PhD)</option>
+                                        <option>Master's Degree</option>
+                                        <option>Bachelor's Degree</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="facultyDOB">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date Hired *</label>
+                                    <input type="date" class="form-control" id="facultyHireDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Professional Qualifications *</label>
+                                    <textarea class="form-control" id="facultyQualifications" rows="2" placeholder="Licenses, certifications, etc." required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Office Location</label>
+                                    <input type="text" class="form-control" id="facultyOffice" placeholder="Building and Room Number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Home Address</label>
+                                    <textarea class="form-control" id="facultyAddress" rows="2" placeholder="Complete address"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Emergency Contact</label>
+                                    <input type="text" class="form-control" id="facultyEmergencyContact" placeholder="Name of contact person">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Emergency Phone</label>
+                                    <input type="tel" class="form-control" id="facultyEmergencyPhone" placeholder="+63 9xx xxx xxxx">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Employment Status</label>
+                            <select class="form-select" id="facultyStatus">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="on-leave">On Leave</option>
+                                <option value="probationary">Probationary</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveFacultyBtn">Save Faculty Member</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mock data arrays
+const students = [];
+const courses = [];
+const attendanceRecords = [];
+const feeRecords = [];
+const examRecords = [];
+
+// Utility to render table rows
+function renderTableRows(data, columns, tbody) {
+    tbody.innerHTML = '';
+    data.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        columns.forEach(col => {
+            const td = document.createElement('td');
+            td.textContent = item[col] || '';
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}
+
+// Student Management
+document.getElementById('studentForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const firstName = document.getElementById('studentFirstName').value.trim();
+    const lastName = document.getElementById('studentLastName').value.trim();
+    const email = document.getElementById('studentEmail').value.trim();
+    if (!firstName || !lastName || !email) return;
+    students.push({ id: students.length + 1, name: `${firstName} ${lastName}`, email });
+    renderTableRows(students, ['id', 'name', 'email'], document.getElementById('studentsTableBody'));
+    e.target.reset();
+});
+
+// Courses & Programs
+document.getElementById('courseForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const code = document.getElementById('courseCode').value.trim();
+    const name = document.getElementById('courseName').value.trim();
+    const credits = document.getElementById('courseCredits').value.trim();
+    if (!code || !name || !credits) return;
+    courses.push({ code, name, credits });
+    renderTableRows(courses, ['code', 'name', 'credits'], document.getElementById('coursesTableBody'));
+    e.target.reset();
+});
+
+// Attendance Tracking
+document.getElementById('attendanceForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const student = document.getElementById('attendanceStudent').value.trim();
+    const date = document.getElementById('attendanceDate').value;
+    const status = document.getElementById('attendanceStatus').value;
+    if (!student || !date || !status) return;
+    attendanceRecords.push({ student, date, status });
+    renderTableRows(attendanceRecords, ['student', 'date', 'status'], document.getElementById('attendanceTableBody'));
+    e.target.reset();
+});
+
+// Fee Management
+document.getElementById('feeForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const student = document.getElementById('feeStudent').value.trim();
+    const amount = document.getElementById('feeAmount').value.trim();
+    const dueDate = document.getElementById('feeDueDate').value;
+    if (!student || !amount || !dueDate) return;
+    feeRecords.push({ student, amount, dueDate });
+    renderTableRows(feeRecords, ['student', 'amount', 'dueDate'], document.getElementById('feesTableBody'));
+    e.target.reset();
+});
+
+// Exams & Grades
+document.getElementById('examForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const student = document.getElementById('examStudent').value.trim();
+    const course = document.getElementById('examCourse').value.trim();
+    const date = document.getElementById('examDate').value;
+    const grade = document.getElementById('examGrade').value.trim();
+    if (!student || !course || !date || !grade) return;
+    examRecords.push({ student, course, date, grade });
+    renderTableRows(examRecords, ['student', 'course', 'date', 'grade'], document.getElementById('examsTableBody'));
+    e.target.reset();
+});
+
+// Reports & Analytics buttons
+document.getElementById('generateStudentReport').addEventListener('click', () => {
+    const output = students.length ? students.map(s => `${s.id}: ${s.name} (${s.email})`).join('<br>') : 'No student data.';
+    document.getElementById('reportOutput').innerHTML = `<h5>Student Report</h5><p>${output}</p>`;
+});
+document.getElementById('generateCourseReport').addEventListener('click', () => {
+    const output = courses.length ? courses.map(c => `${c.code}: ${c.name} (${c.credits} credits)`).join('<br>') : 'No course data.';
+    document.getElementById('reportOutput').innerHTML = `<h5>Course Report</h5><p>${output}</p>`;
+});
+document.getElementById('generateAttendanceReport').addEventListener('click', () => {
+    const output = attendanceRecords.length ? attendanceRecords.map(a => `${a.date} - ${a.student}: ${a.status}`).join('<br>') : 'No attendance data.';
+    document.getElementById('reportOutput').innerHTML = `<h5>Attendance Report</h5><p>${output}</p>`;
+});
+document.getElementById('generateFeeReport').addEventListener('click', () => {
+    const output = feeRecords.length ? feeRecords.map(f => `${f.student}: ₱${f.amount} due on ${f.dueDate}`).join('<br>') : 'No fee data.';
+    document.getElementById('reportOutput').innerHTML = `<h5>Fee Report</h5><p>${output}</p>`;
+});
+document.getElementById('generateExamReport').addEventListener('click', () => {
+    const output = examRecords.length ? examRecords.map(e => `${e.student} - ${e.course} on ${e.date}: Grade ${e.grade}`).join('<br>') : 'No exam data.';
+    document.getElementById('reportOutput').innerHTML = `<h5>Exam Report</h5><p>${output}</p>`;
+});
+        // Mock database for CUCon
+        const mockDatabase = {
+            users: [
+                { id: 1, email: 'admin@cucon.edu.ph', password: 'admin123', firstName: 'Admin', lastName: 'User', role: 'admin' }
+            ],
+            faculty: [
+                {
+                    id: 1,
+                    firstName: 'Maria',
+                    lastName: 'Santos',
+                    email: 'maria.santos@cucon.edu.ph',
+                    phone: '+63 912 345 6789',
+                    rank: 'Professor',
+                    department: 'College of Arts & Sciences',
+                    specialization: 'Mathematics',
+                    education: 'Doctorate (PhD)',
+                    dob: '1975-03-15',
+                    hireDate: '2015-06-01',
+                    qualifications: 'Licensed Professional Teacher, PhD in Mathematics',
+                    office: 'CAS Building, Room 201',
+                    address: '123 Education St, Nasugbu, Batangas',
+                    emergencyContact: 'Juan Santos',
+                    emergencyPhone: '+63 923 456 7890',
+                    status: 'active'
+                },
+                {
+                    id: 2,
+                    firstName: 'Juan',
+                    lastName: 'Dela Cruz',
+                    email: 'juan.delacruz@cucon.edu.ph',
+                    phone: '+63 934 567 8901',
+                    rank: 'Associate Professor',
+                    department: 'College of Computer Studies',
+                    specialization: 'Computer Science',
+                    education: 'Master\'s Degree',
+                    dob: '1982-07-22',
+                    hireDate: '2018-08-15',
+                    qualifications: 'Certified Software Developer, Master in Computer Science',
+                    office: 'CCS Building, Room 105',
+                    address: '456 Learning Ave, Nasugbu, Batangas',
+                    emergencyContact: 'Maria Dela Cruz',
+                    emergencyPhone: '+63 945 678 9012',
+                    status: 'active'
+                },
+                {
+                    id: 3,
+                    firstName: 'Ana',
+                    lastName: 'Reyes',
+                    email: 'ana.reyes@cucon.edu.ph',
+                    phone: '+63 956 789 0123',
+                    rank: 'Assistant Professor',
+                    department: 'College of Education',
+                    specialization: 'Educational Psychology',
+                    education: 'Master\'s Degree',
+                    dob: '1988-11-08',
+                    hireDate: '2021-01-10',
+                    qualifications: 'Licensed Guidance Counselor, MA in Educational Psychology',
+                    office: 'COE Building, Room 302',
+                    address: '789 Knowledge Rd, Nasugbu, Batangas',
+                    emergencyContact: 'Pedro Reyes',
+                    emergencyPhone: '+63 967 890 1234',
+                    status: 'active'
+                }
+            ]
+        };
+
+        // DOM Elements
+        const authContainer = document.getElementById('auth-container');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const loginFormEl = document.getElementById('login-form');
+        const registerFormEl = document.getElementById('register-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userNameEl = document.getElementById('user-name');
+        const facultyList = document.getElementById('faculty-list');
+        const facultyForm = document.getElementById('facultyForm');
+        const saveFacultyBtn = document.getElementById('saveFacultyBtn');
+        const modalTitle = document.getElementById('modal-title');
+
+        // Current user state
+        let currentUser = null;
+        let editingFacultyId = null;
+
+        // Show register form
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginFormEl.classList.add('hidden');
+            registerFormEl.classList.remove('hidden');
+        });
+
+        // Show login form
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerFormEl.classList.add('hidden');
+            loginFormEl.classList.remove('hidden');
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Mock authentication
+            const user = mockDatabase.users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                userNameEl.textContent = `${user.firstName} ${user.lastName}`;
+                authContainer.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                loadFaculty();
+            } else {
+                alert('Invalid email or password!');
+            }
+        });
+
+        // Register form submission
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('userRole').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Check if email already exists
+            if (mockDatabase.users.find(u => u.email === email)) {
+                alert('Email already registered!');
+                return;
+            }
+            
+            // Add new user
+            const newUser = {
+                id: mockDatabase.users.length + 1,
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                role: role
+            };
+            
+            mockDatabase.users.push(newUser);
+            alert('Registration successful! You can now log in.');
+            registerFormEl.classList.add('hidden');
+            loginFormEl.classList.remove('hidden');
+            registerForm.reset();
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            authContainer.classList.remove('hidden');
+            dashboard.classList.add('hidden');
+            loginForm.reset();
+        });
+
+        // Tab Navigation
+        document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tab = this.getAttribute('data-tab');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content
+                document.getElementById(tab).classList.remove('hidden');
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update page title
+                let title = this.textContent.trim().replace(' ', '').replace(' ', '').replace(' ', '').replace(' ', '').replace(' ', '').replace(' ', '').replace(' ', '');
+                document.getElementById('page-title').textContent = title;
+            });
+        });
+
+        // Load faculty
+        function loadFaculty() {
+            facultyList.innerHTML = '';
+            mockDatabase.faculty.forEach(faculty => {
+                const facultyCard = document.createElement('div');
+                facultyCard.className = 'teacher-card';
+                facultyCard.innerHTML = `
+                    <div class="teacher-avatar">
+                        ${faculty.firstName.charAt(0)}${faculty.lastName.charAt(0)}
+                    </div>
+                    <div class="teacher-info">
+                        <div class="teacher-name">${faculty.firstName} ${faculty.lastName}</div>
+                        <div class="teacher-subject">${faculty.rank} - ${faculty.specialization}</div>
+                        <div class="teacher-details">
+                            <div><strong>Department:</strong> ${faculty.department}</div>
+                            <div><strong>Email:</strong> ${faculty.email}</div>
+                            <div><strong>Phone:</strong> ${faculty.phone || 'Not provided'}</div>
+                            <div><strong>Office:</strong> ${faculty.office || 'Not assigned'}</div>
+                            <div><strong>Hired:</strong> ${new Date(faculty.hireDate).toLocaleDateString()}</div>
+                            <div><strong>Qualifications:</strong> ${faculty.qualifications}</div>
+                        </div>
+                        <div class="teacher-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-user"></i>
+                                <span>${faculty.emergencyContact || 'N/A'}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>${faculty.emergencyPhone || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="status-badge ${
+                                faculty.status === 'active' ? 'status-active' : 
+                                faculty.status === 'on-leave' ? 'status-on-leave' : 'status-inactive'
+                            }">
+                                ${faculty.status.charAt(0).toUpperCase() + faculty.status.slice(1)}
+                            </span>
+                            <div>
+                                <button class="action-btn btn-edit" onclick="editFaculty(${faculty.id})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="action-btn btn-delete" onclick="deleteFaculty(${faculty.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                facultyList.appendChild(facultyCard);
+            });
+        }
+
+        // Edit faculty
+        window.editFaculty = function(id) {
+            const faculty = mockDatabase.faculty.find(f => f.id === id);
+            if (!faculty) return;
+            
+            editingFacultyId = id;
+            modalTitle.textContent = 'Edit Faculty Member';
+            saveFacultyBtn.textContent = 'Update Faculty Member';
+            
+            document.getElementById('facultyFirstName').value = faculty.firstName;
+            document.getElementById('facultyLastName').value = faculty.lastName;
+            document.getElementById('facultyEmail').value = faculty.email;
+            document.getElementById('facultyPhone').value = faculty.phone;
+            document.getElementById('facultyRank').value = faculty.rank;
+            document.getElementById('facultyDepartment').value = faculty.department;
+            document.getElementById('facultySpecialization').value = faculty.specialization;
+            document.getElementById('facultyEducation').value = faculty.education;
+            document.getElementById('facultyDOB').value = faculty.dob;
+            document.getElementById('facultyHireDate').value = faculty.hireDate;
+            document.getElementById('facultyQualifications').value = faculty.qualifications;
+            document.getElementById('facultyOffice').value = faculty.office;
+            document.getElementById('facultyAddress').value = faculty.address;
+            document.getElementById('facultyEmergencyContact').value = faculty.emergencyContact;
+            document.getElementById('facultyEmergencyPhone').value = faculty.emergencyPhone;
+            document.getElementById('facultyStatus').value = faculty.status;
+            
+            const facultyModal = new bootstrap.Modal(document.getElementById('facultyModal'));
+            facultyModal.show();
+        };
+
+        // Delete faculty
+        window.deleteFaculty = function(id) {
+            if (confirm('Are you sure you want to delete this faculty member? This action cannot be undone.')) {
+                mockDatabase.faculty = mockDatabase.faculty.filter(f => f.id !== id);
+                loadFaculty();
+            }
+        };
+
+        // Save faculty
+        saveFacultyBtn.addEventListener('click', () => {
+            const facultyData = {
+                firstName: document.getElementById('facultyFirstName').value,
+                lastName: document.getElementById('facultyLastName').value,
+                email: document.getElementById('facultyEmail').value,
+                phone: document.getElementById('facultyPhone').value,
+                rank: document.getElementById('facultyRank').value,
+                department: document.getElementById('facultyDepartment').value,
+                specialization: document.getElementById('facultySpecialization').value,
+                education: document.getElementById('facultyEducation').value,
+                dob: document.getElementById('facultyDOB').value,
+                hireDate: document.getElementById('facultyHireDate').value,
+                qualifications: document.getElementById('facultyQualifications').value,
+                office: document.getElementById('facultyOffice').value,
+                address: document.getElementById('facultyAddress').value,
+                emergencyContact: document.getElementById('facultyEmergencyContact').value,
+                emergencyPhone: document.getElementById('facultyEmergencyPhone').value,
+                status: document.getElementById('facultyStatus').value
+            };
+            
+            if (editingFacultyId) {
+                // Update existing faculty
+                const facultyIndex = mockDatabase.faculty.findIndex(f => f.id === editingFacultyId);
+                if (facultyIndex !== -1) {
+                    mockDatabase.faculty[facultyIndex] = { ...mockDatabase.faculty[facultyIndex], ...facultyData };
+                }
+                editingFacultyId = null;
+                modalTitle.textContent = 'Add New Faculty Member';
+                saveFacultyBtn.textContent = 'Save Faculty Member';
+            } else {
+                // Add new faculty
+                facultyData.id = mockDatabase.faculty.length + 1;
+                mockDatabase.faculty.push(facultyData);
+            }
+            
+            facultyForm.reset();
+            loadFaculty();
+            const facultyModal = bootstrap.Modal.getInstance(document.getElementById('facultyModal'));
+            facultyModal.hide();
+        });
+
+        // Initialize with login form visible
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set dashboard as active tab initially
+            document.querySelector('[data-tab="dashboard-content"]').classList.add('active');
+        });
+
+        // Backend Integration Notes for CUCon:
+        // Database Schema would include:
+        // - users table (id, email, password_hash, first_name, last_name, role, created_at)
+        // - faculty table (id, user_id, first_name, last_name, email, phone, academic_rank, department, specialization, education_level, dob, hire_date, qualifications, office_location, address, emergency_contact, emergency_phone, status, created_at, updated_at)
+        // - students table
+        // - courses table
+        // - programs table
+        // - attendance table
+        // - fees table
+        // - exams table
+        // - grades table
+        // - departments table
+        //
+        // API Endpoints:
+        // POST /api/auth/login
+        // POST /api/auth/register
+        // GET /api/faculty             
+        // POST /api/faculty
+        // PUT /api/faculty/:id
+        // DELETE /api/faculty/:id
+        // GET /api/students
+        // GET /api/courses
+        // etc.
+    </script>
+</body>
+</html>
